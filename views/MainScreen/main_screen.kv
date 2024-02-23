@@ -1,0 +1,172 @@
+<MainScreenView>:
+    md_bg_color: self.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '16dp'
+        spacing: '2dp'
+
+        MDBoxLayout:
+            padding: '4dp'
+            spacing: '8dp'
+            adaptive_height: True
+            FloatLayout:
+                id: field_wrapper
+                size_hint: 1,None
+                height: '50dp'
+                canvas.before:
+                    Color:
+                        rgb: rgba(255,255,255,255)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [4]
+                canvas.after:
+                    Color:
+                        rgb: rgba(168,168,168,255)
+                    Line:
+                        width: 2
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, 4, 4, 4, 4)
+                TextInput:
+                    id: field_psw
+                    size_hint: 1,None
+                    height: self.minimum_height
+                    pos_hint: {'center_y': 0.5,'center_x': 0.5}
+                    padding: '16dp'
+                    font_size: '20dp'
+                    background_color: rgba(0,0,0,0)
+                    multiline: False
+                    hint_text_color: rgba(168,168,168,255)
+                    line_color: rgba(168,168,168,255)
+
+                    on_text: root.controller.set_data('field-psw',field_psw.text)
+
+                MDIconButton:
+                    icon: 'eye'
+                    size_hint: None, None
+                    size: field_wrapper.height - 5, field_wrapper.height - 5
+                    pos_hint: {'right': 0.99,'center_y': 0.5}
+                    ripple_scale: 0
+                    focus_behavior: False
+                    on_release:
+                        self.icon = 'eye-off' if self.icon == 'eye' else 'eye'
+                        field_psw.password = True if self.icon == 'eye-off' else False
+
+            MDIconButton:
+                id: reload_psw_btn
+                icon: 'reload'
+                size_hint: None, None
+                size: field_wrapper.height - 5, field_wrapper.height - 5
+                ripple_scale: 0
+                focus_behavior: False
+                theme_icon_color: "Custom"
+                icon_color: root.theme_cls.primaryColor
+
+                on_release:
+                    root.controller.generate_password()
+
+            MDIconButton:
+                id: copy_psw_btn
+                icon: 'content-copy'
+                size_hint: None, None
+                size: field_wrapper.height - 5, field_wrapper.height - 5
+                ripple_scale: 0
+                focus_behavior: False
+                theme_icon_color: "Custom"
+                icon_color: root.theme_cls.primaryColor
+                on_release:
+                    root.controller.on_copy_text_btn()
+
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: '4dp'
+            spacing: '16dp'
+            MDBoxLayout:
+                padding: '4dp'
+                spacing: '4dp'
+                adaptive_height: True
+
+                MDLabel:
+                    adaptive_size: True
+                    text: 'a-z'
+                    font_style: 'Title'
+                    role: 'large'
+                MDWidget:
+                MDSwitch:
+                    id: use_lowercase_switch
+                    on_active: root.controller.set_data('enable-lowercase',use_lowercase_switch.active)
+            MDBoxLayout:
+                padding: '4dp'
+                spacing: '4dp'
+                adaptive_height: True
+                MDLabel:
+                    adaptive_size: True
+                    text: 'A-Z'
+                    font_style: 'Title'
+                    role: 'large'
+                MDWidget:
+                MDSwitch:
+                    id: use_uppercase_switch
+                    on_active: root.controller.set_data('enable-uppercase',use_uppercase_switch.active)
+
+            MDBoxLayout:
+                padding: '4dp'
+                spacing: '4dp'
+                adaptive_height: True
+                MDLabel:
+                    adaptive_size: True
+                    text: '0-9'
+                    font_style: 'Title'
+                    role: 'large'
+                MDWidget:
+                MDSwitch:
+                    id: use_digits_switch
+                    on_active: root.controller.set_data('enable-digits',use_digits_switch.active)
+
+            MDBoxLayout:
+                padding: '4dp'
+                spacing: '4dp'
+                adaptive_height: True
+                MDLabel:
+                    adaptive_size: True
+                    text: '#.~&%$#@)(_+ '
+                    font_style: 'Title'
+                    role: 'large'
+                MDWidget:
+                MDSwitch:
+                    id: use_punctuation_switch
+                    on_active: root.controller.set_data('enable-punctuation',use_punctuation_switch.active)
+        MDBoxLayout:
+            orientation: 'vertical'
+            pacing: '4dp'
+            MDBoxLayout:
+                padding: '4dp'
+                spacing: '4dp'
+                adaptive_height: True
+                MDSlider:
+                    id: psw_length_slider
+                    step: 1
+                    value: 100
+                    step_point_size: 0
+                    on_value: root.controller.set_data('psw-length',psw_length_slider.value)
+                    MDSliderHandle:
+                    MDSliderValueLabel:
+            MDBoxLayout:
+                MDButton:
+                    id: confirm_btn
+                    style: 'filled'
+                    theme_height: 'Custom'
+                    theme_width: 'Custom'
+                    height: '50dp'
+                    size_hint_x: 1
+                    radius: 4
+                    ripple_scale: 0
+                    on_release: root.controller.generate_password()
+                    MDButtonText:
+                        pos_hint: {'center_y': 0.5,'center_x': 0.5}
+                        font_style: 'Title'
+                        role: 'large'
+                        text: 'Generate password'
+
+
+
